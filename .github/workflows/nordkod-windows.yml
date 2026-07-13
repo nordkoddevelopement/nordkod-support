@@ -17,6 +17,8 @@ on:
   push:
     branches:
       - nordkod
+      - nordkod-support
+      - nordkod-remote
 
 env:
   SCITER_RUST_VERSION: "1.75"
@@ -197,7 +199,7 @@ jobs:
       - name: Upload unsigned build folder
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: nordkod-support-windows-x86_64-folder
+          name: ${{ github.ref_name }}-windows-x86_64-folder
           path: rustdesk
 
       - name: Build self-extracted portable executable
@@ -209,7 +211,7 @@ jobs:
           python3 ./generate.py -f ../../rustdesk/ -o . -e ../../rustdesk/rustdesk.exe
           popd
           mkdir -p ./SignOutput
-          mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/nordkod-support-${{ env.VERSION }}-x86_64.exe
+          mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/${{ github.ref_name }}-${{ env.VERSION }}-x86_64.exe
           ls -l ./SignOutput
 
       - name: Add MSBuild to PATH
@@ -224,13 +226,13 @@ jobs:
           nuget restore msi.sln
           msbuild msi.sln -p:Configuration=Release -p:Platform=x64 /p:TargetVersion=Windows10
           $msi = Get-ChildItem ./Package/bin/*/Release/en-us/Package.msi | Select-Object -First 1
-          mv $msi.FullName ../../SignOutput/nordkod-support-${{ env.VERSION }}-x86_64.msi
-          sha256sum ../../SignOutput/nordkod-support-*.msi
+          mv $msi.FullName ../../SignOutput/${{ github.ref_name }}-${{ env.VERSION }}-x86_64.msi
+          sha256sum ../../SignOutput/*.msi
 
       - name: Upload portable exe + msi
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: nordkod-support-windows-x86_64-installer
+          name: ${{ github.ref_name }}-windows-x86_64-installer
           path: |
-            ./SignOutput/nordkod-support-*.exe
-            ./SignOutput/nordkod-support-*.msi
+            ./SignOutput/*.exe
+            ./SignOutput/*.msi

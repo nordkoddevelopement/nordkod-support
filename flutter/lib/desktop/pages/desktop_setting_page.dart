@@ -2456,14 +2456,25 @@ class _AboutState extends State<_About> {
                   ).marginSymmetric(vertical: 4.0)),
               InkWell(
                   onTap: () {
-                    launchUrlString('https://rustdesk.com');
+                    launchUrlString('https://nordkod.io');
                   },
                   child: Text(
                     translate('Website'),
                     style: linkStyle,
                   ).marginSymmetric(vertical: 4.0)),
+              // Nordkod: AGPL-3.0 attribution for the RustDesk base, moved here
+              // from the home page.
+              InkWell(
+                  onTap: () {
+                    launchUrlString(
+                        'https://github.com/nordkoddevelopement/nordkod-support');
+                  },
+                  child: Text(
+                    'Baserad på RustDesk (AGPL-3.0)',
+                    style: linkStyle,
+                  ).marginSymmetric(vertical: 4.0)),
               Container(
-                decoration: const BoxDecoration(color: Color(0xFF2c8cff)),
+                decoration: const BoxDecoration(color: Color(0xFF1A1A1A)),
                 padding:
                     const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
                 child: SelectionArea(

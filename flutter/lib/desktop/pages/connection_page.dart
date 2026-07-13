@@ -78,7 +78,11 @@ class _OnlineStatusWidgetState extends State<OnlineStatusWidget> {
               .marginOnly(left: em),
         );
 
-    setupServerWidget() => Flexible(
+    // Nordkod: we always run our own server (fjarr.nordkod.io), so the
+    // "set up your own server for faster connection" hint is never shown.
+    setupServerWidget() => const Offstage();
+    // ignore: dead_code
+    Widget _unusedSetupServerWidget() => Flexible(
           child: Offstage(
             offstage: !(!_svcStopped.value &&
                 stateGlobal.svcStatus.value == SvcStatus.ready &&

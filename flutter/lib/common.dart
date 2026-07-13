@@ -251,16 +251,18 @@ class MyTheme {
   MyTheme._();
 
   static const Color grayBg = Color(0xFFEFEFF2);
-  static const Color accent = Color(0xFF0071FF);
-  static const Color accent50 = Color(0x770071FF);
-  static const Color accent80 = Color(0xAA0071FF);
+  // Nordkod accent: monochrome charcoal #1A1A1A (replaces RustDesk's blue).
+  // Buttons/links/highlights are charcoal with white foreground. No color.
+  static const Color accent = Color(0xFF1A1A1A);
+  static const Color accent50 = Color(0x771A1A1A);
+  static const Color accent80 = Color(0xAA1A1A1A);
   static const Color canvasColor = Color(0xFF212121);
   static const Color border = Color(0xFFCCCCCC);
-  static const Color idColor = Color(0xFF00B6F0);
+  static const Color idColor = Color(0xFF1A1A1A);
   static const Color darkGray = Color.fromARGB(255, 148, 148, 148);
   static const Color cmIdColor = Color(0xFF21790B);
   static const Color dark = Colors.black87;
-  static const Color button = Color(0xFF2C8CFF);
+  static const Color button = Color(0xFF1A1A1A);
   static const Color hoverBorder = Color(0xFF999999);
 
   // ListTile
@@ -432,6 +434,8 @@ class MyTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: MyTheme.accent,
+        // Nordkod: charcoal button with white text (monochrome).
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -454,7 +458,10 @@ class MyTheme {
         style:
             MenuStyle(backgroundColor: MaterialStatePropertyAll(Colors.white))),
     colorScheme: ColorScheme.light(
-        primary: Colors.blue, secondary: accent, background: grayBg),
+        primary: accent,
+        onPrimary: Colors.white,
+        secondary: accent,
+        background: grayBg),
     popupMenuTheme: PopupMenuThemeData(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -562,7 +569,8 @@ class MyTheme {
         style: MenuStyle(
             backgroundColor: MaterialStatePropertyAll(Color(0xFF121212)))),
     colorScheme: ColorScheme.dark(
-      primary: Colors.blue,
+      primary: accent,
+      onPrimary: Colors.white,
       secondary: accent,
       background: Color(0xFF24252B),
     ),
@@ -579,7 +587,10 @@ class MyTheme {
   );
 
   static ThemeMode getThemeModePreference() {
-    return themeModeFromString(bind.mainGetLocalOption(key: kCommConfKeyTheme));
+    // Nordkod: default to LIGHT when the user has not explicitly chosen a theme.
+    final v = bind.mainGetLocalOption(key: kCommConfKeyTheme);
+    if (v.isEmpty) return ThemeMode.light;
+    return themeModeFromString(v);
   }
 
   static Future<void> changeDarkMode(ThemeMode mode) async {
@@ -1323,7 +1334,7 @@ Color? _msgboxColor(String type) {
   if (type.contains("error") || type == "re-input-password") {
     return Color(0xFFE04F5F);
   }
-  return Color(0xFF2C8CFF);
+  return Color(0xFF1A1A1A);
 }
 
 Widget msgboxIcon(String type) {
@@ -3737,27 +3748,9 @@ Color? disabledTextColor(BuildContext context, bool enabled) {
 }
 
 Widget loadPowered(BuildContext context) {
-  if (bind.mainGetBuildinOption(key: "hide-powered-by-me") == 'Y') {
-    return SizedBox.shrink();
-  }
-  return MouseRegion(
-    cursor: SystemMouseCursors.click,
-    child: GestureDetector(
-      onTap: () {
-        launchUrl(Uri.parse('https://rustdesk.com'));
-      },
-      child: Opacity(
-          opacity: 0.5,
-          child: Text(
-            translate("powered_by_me"),
-            overflow: TextOverflow.clip,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(fontSize: 9, decoration: TextDecoration.underline),
-          )),
-    ),
-  ).marginOnly(top: 6);
+  // Nordkod: never show "Powered by RustDesk" on the home page. The RustDesk
+  // attribution (AGPL-3.0) is moved into the About dialog instead.
+  return SizedBox.shrink();
 }
 
 const _kDefaultLogoAsset = 'assets/logo.png';
@@ -3991,7 +3984,7 @@ bool get isCustomClient {
 }
 
 get defaultOptionLang => isCustomClient ? 'default' : '';
-get defaultOptionTheme => isCustomClient ? 'system' : '';
+get defaultOptionTheme => isCustomClient ? 'light' : '';
 get defaultOptionYes => isCustomClient ? 'Y' : '';
 get defaultOptionNo => isCustomClient ? 'N' : '';
 get defaultOptionWhitelist => isCustomClient ? ',' : '';

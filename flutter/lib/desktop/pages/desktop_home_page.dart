@@ -390,6 +390,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
 
   buildTip(BuildContext context) {
     final isOutgoingOnly = bind.isOutgoingOnly();
+    final isIncomingOnly = bind.isIncomingOnly();
     return Padding(
       padding:
           const EdgeInsets.only(left: 20.0, right: 16, top: 16.0, bottom: 5),
@@ -403,7 +404,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    translate("Your Desktop"),
+                    isIncomingOnly ? 'Fjärrsupport' : translate("Your Desktop"),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
@@ -412,7 +413,14 @@ class _DesktopHomePageState extends State<DesktopHomePage>
           SizedBox(
             height: 10.0,
           ),
-          if (!isOutgoingOnly)
+          // Nordkod customer variant: give the ID + one-time code to Nordkod.
+          if (isIncomingOnly)
+            Text(
+              'Ge din ID och kod nedan till Nordkod för att få hjälp.',
+              overflow: TextOverflow.clip,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          if (!isOutgoingOnly && !isIncomingOnly)
             Text(
               translate("desk_tip"),
               overflow: TextOverflow.clip,

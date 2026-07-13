@@ -2080,7 +2080,51 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
     ThrottledInterval::new(i)
 }
 
+// ===================== Nordkod branded-client defaults =====================
+// RustDesk's own "custom client" mechanism normally reads these knobs from a
+// signed `custom.txt`. We cannot sign that blob (it needs RustDesk's private
+// key), so we inject the exact same settings in code instead. This runs at
+// startup from every entry point (core_main, service, flutter init).
+//
+// The two build variants differ ONLY in the two constants below:
+//   * "Nordkod Support" (customer)  -> NORDKOD_LOCKED = true  (incoming only)
+//   * "Nordkod Remote"  (team)      -> NORDKOD_LOCKED = false (full bidi)
+
+/// Display name for this build (window title, About dialog, ID board, ...).
+pub const NORDKOD_APP_NAME: &str = "Nordkod Support";
+/// Lock the client down for non-technical customers (incoming connections only,
+/// no settings screen, forced click-to-accept). false = full team build.
+pub const NORDKOD_LOCKED: bool = true;
+
+fn load_nordkod_defaults() {
+    // App / display name.
+    *config::APP_NAME.write().unwrap() = NORDKOD_APP_NAME.to_owned();
+
+    // Never advertise "Powered by RustDesk" on the home page (attribution lives
+    // in the About dialog instead, for AGPL compliance).
+    config::BUILTIN_SETTINGS
+        .write()
+        .unwrap()
+        .insert("hide-powered-by-me".to_owned(), "Y".to_owned());
+
+    if NORDKOD_LOCKED {
+        // Customer variant: incoming-only + hidden settings screen.
+        {
+            let mut hard = config::HARD_SETTINGS.write().unwrap();
+            hard.insert("conn-type".to_owned(), "incoming".to_owned());
+            hard.insert("disable-settings".to_owned(), "Y".to_owned());
+        }
+        // Force "click to accept" for every incoming connection (no unattended
+        // password path) and prevent the customer from changing it.
+        config::OVERWRITE_SETTINGS
+            .write()
+            .unwrap()
+            .insert("approve-mode".to_owned(), "click".to_owned());
+    }
+}
+
 pub fn load_custom_client() {
+    load_nordkod_defaults();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
