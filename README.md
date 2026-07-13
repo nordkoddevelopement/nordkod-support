@@ -1,3 +1,22 @@
+# Nordkod Support — a branded build of RustDesk
+
+This repository is **Nordkod's rebranded distribution of [RustDesk](https://github.com/rustdesk/rustdesk)**, the open-source remote desktop software. Nordkod uses it to provide remote support to its customers.
+
+The complete corresponding source of this branded build lives entirely in this public repository, on the `nordkod` branch. Nordkod's modifications are:
+
+- ID/rendezvous server hardcoded to `fjarr.nordkod.io`
+- Server public key hardcoded to Nordkod's key
+- Internal `APP_NAME` renamed to `NordkodSupport`; Windows product/version strings renamed to "Nordkod Support"
+- A trimmed CI workflow (`.github/workflows/nordkod-windows.yml`) that builds only the Windows x86_64 Flutter client
+
+The rendezvous-server / public-key constants live in the companion fork [nordkoddevelopement/hbb_common](https://github.com/nordkoddevelopement/hbb_common) (branch `nordkod`), wired in as the `libs/hbb_common` submodule.
+
+**Upstream credit:** RustDesk is created and maintained by the RustDesk authors (Purslane Tech Pte. Ltd. and contributors). All upstream copyright notices are retained.
+
+**License:** this project remains licensed under the **GNU AGPL-3.0, unchanged** (see the [`LICENCE`](LICENCE) file). As required by the AGPL, the full source of all Nordkod modifications is available in this public repository.
+
+---
+
 <p align="center">
   <img src="res/logo-header.svg" alt="RustDesk - Your remote desktop"><br>
   <a href="#raw-steps-to-build">Build</a> •
