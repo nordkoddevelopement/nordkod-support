@@ -618,8 +618,9 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  Color.fromARGB(255, 226, 66, 188),
-                  Color.fromARGB(255, 244, 114, 124),
+                  // Nordkod: monochrome charcoal (was pink/magenta), white text.
+                  Color.fromARGB(255, 38, 38, 38),
+                  Color.fromARGB(255, 26, 26, 26),
                 ],
               )),
               padding: EdgeInsets.all(20),

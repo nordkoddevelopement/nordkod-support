@@ -2114,12 +2114,16 @@ fn load_nordkod_defaults() {
             hard.insert("conn-type".to_owned(), "incoming".to_owned());
             hard.insert("disable-settings".to_owned(), "Y".to_owned());
         }
-        // Force "click to accept" for every incoming connection (no unattended
-        // password path) and prevent the customer from changing it.
+        // Show a one-time code AND require the customer to click "Godkänn"
+        // for every incoming connection ("password-click" = both). Using pure
+        // "click" would suppress the one-time password (showOneTime checks
+        // approveMode != 'click' in desktop_home_page.dart), leaving the code
+        // blank while the on-screen instruction asks for it. Forced (OVERWRITE)
+        // so the customer cannot change it.
         config::OVERWRITE_SETTINGS
             .write()
             .unwrap()
-            .insert("approve-mode".to_owned(), "click".to_owned());
+            .insert("approve-mode".to_owned(), "password-click".to_owned());
     }
 }
 
