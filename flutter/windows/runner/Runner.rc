@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "Nordkod" "\0"
-            VALUE "FileDescription", "Nordkod Support" "\0"
+            VALUE "FileDescription", "Nordkod Remote" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "rustdesk" "\0"
             VALUE "LegalCopyright", "Based on RustDesk. Copyright © 2026 Purslane Tech Pte. Ltd. All rights reserved." "\0"
             VALUE "OriginalFilename", "rustdesk.exe" "\0"
-            VALUE "ProductName", "Nordkod Support" "\0"
+            VALUE "ProductName", "Nordkod Remote" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

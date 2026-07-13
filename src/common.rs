@@ -2091,10 +2091,10 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 //   * "Nordkod Remote"  (team)      -> NORDKOD_LOCKED = false (full bidi)
 
 /// Display name for this build (window title, About dialog, ID board, ...).
-pub const NORDKOD_APP_NAME: &str = "Nordkod Support";
+pub const NORDKOD_APP_NAME: &str = "Nordkod Remote";
 /// Lock the client down for non-technical customers (incoming connections only,
 /// no settings screen, forced click-to-accept). false = full team build.
-pub const NORDKOD_LOCKED: bool = true;
+pub const NORDKOD_LOCKED: bool = false;
 
 fn load_nordkod_defaults() {
     // App / display name.
